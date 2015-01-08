@@ -1,0 +1,27 @@
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.bar {
+    fill: steelblue;
+}
+
+.x.axis path {
+    display: none;
+}
+
+.legend line {
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+.grid .tick {
+    stroke: lightgrey;
+    stroke-opacity: 0.7;
+    shape-rendering: crispEdges;
+}
+.grid path {
+    stroke-width: 0;
+}
