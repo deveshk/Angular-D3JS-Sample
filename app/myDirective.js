@@ -14,7 +14,7 @@ app.directive('mydirective', function () {
                 }
                 var yCount = n.length;
                 // var yCount =10;
-                var margin = {t: 30, r: 20, b: 20, l: 70}, width = 900,
+                var margin = {t: 25, r: 150, b: 20, l: 70}, width = 1000,
                         height = 600;
                 var w = width - margin.l - margin.r;
                 var h = height - margin.t - margin.b;
@@ -30,6 +30,13 @@ app.directive('mydirective', function () {
                     p = ((d.quantityPlaced / d.quantity)).toFixed(4);
                     return [[0, e], [e, (p - e).toFixed(4)], [p, 1 - p]];
                 };
+                var line = d3.svg.line()
+                        .x(function (d) {
+                            return d.x;
+                        })
+                        .y(function (d) {
+                            return d.y;
+                        });
                 var xAxis = d3.svg.axis()
                         .scale(x)
                         .orient("top")
@@ -91,10 +98,24 @@ app.directive('mydirective', function () {
                                 .tickFormat("")
                                 );
                 n.forEach(function (td, j) {
+                    // Draw Y axis labels
                     svg.append("g")
                             .append("text")
                             .text(td.id)
                             .attr("transform", "translate(" + (margin.l - 20) + "," + (y(j) + Math.floor((w / yCount) / 2) + yCount) + ")");
+                    // Put Total quantity on the right of bar
+                    svg.append("g")
+                            .append("text")
+                            .text(td.quantity)
+                            .attr("transform", "translate(" + (w - margin.r + 20) + "," + (y(j) + Math.floor((w / yCount) / 2) + yCount) + ")");
+                    // Draw a line below total quantity right to bar
+
+                    svg.append("g")
+                            .append("path")
+                            .attr("class", "line")
+                            .attr("d", line([{x:0,y:0},{x:60,y:0}]))
+                            .attr("transform", "translate(" + (w - margin.r) + "," + (y(j) + Math.floor((w / yCount) / 2) + yCount + 5) + ")");
+
                     svg.append("g")
                             .attr("transform", "translate(" + margin.l + "," + (y(j) + margin.t - Math.floor((w / yCount) / 2)) + ")")
                             .selectAll("rect")
@@ -113,7 +134,33 @@ app.directive('mydirective', function () {
                                 return "translate(" + x(d[0]) + "," + Math.floor((w / yCount) / 2) + ")";
                             });
                 });
+                var legends = [{"title": "Executed", "color": "#6b486b"}, {"title": "Placed", "color": "#827A98"}, {"title": "Total", "color": "#98abc5"}];
+                var legend = svg.selectAll(".legend")
+                        .data(legends.slice().reverse())
+                        .enter().append("g")
+                        .attr("class", "legend")
+                        .attr("transform", function (d, i) {
+//                            return "translate(" + (-margin.l - margin.r - i * 100) + ",0)"; // Horizontal
+                            return "translate(" + (-margin.l - margin.r) + "," + i * 20 + ")";// Vertical
+                        });
+
+                legend.append("rect")
+                        .attr("x", width - 18)
+                        .attr("width", 18)
+                        .attr("height", 18)
+                        .style("fill", function (d) {
+                            return d.color;
+                        });
+
+                legend.append("text")
+                        .attr("x", width - 24)
+                        .attr("y", 9)
+                        .attr("dy", ".35em")
+                        .style("text-anchor", "end")
+                        .text(function (d) {
+                            return d.title;
+                        });
             }, true);
         }
-    }
+    };
 });

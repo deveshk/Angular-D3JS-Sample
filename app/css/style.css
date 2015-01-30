@@ -4,7 +4,11 @@
     stroke: #000;
     shape-rendering: crispEdges;
 }
-
+.line {
+    fill: none;
+    stroke: #98abc5;
+    shape-rendering: crispEdges;
+}
 .bar {
     fill: steelblue;
 }
