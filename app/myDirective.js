@@ -13,8 +13,7 @@ app.directive('mydirective', function () {
                     return;
                 }
                 var yCount = n.length;
-                // var yCount =10;
-                var margin = {t: 25, r: 150, b: 20, l: 70}, width = 1000,
+                var margin = {t: 20, r: 150, b: 20, l: 70}, width = 1000,
                         height = 600;
                 var w = width - margin.l - margin.r;
                 var h = height - margin.t - margin.b;
@@ -107,14 +106,14 @@ app.directive('mydirective', function () {
                     svg.append("g")
                             .append("text")
                             .text(td.quantity)
-                            .attr("transform", "translate(" + (w - margin.r + 20) + "," + (y(j) + Math.floor((w / yCount) / 2) + yCount) + ")");
+                            .attr("transform", "translate(" + (w - margin.r + 10) + "," + (y(j) + Math.floor((w / yCount) / 2) + yCount) + ")");
                     // Draw a line below total quantity right to bar
 
                     svg.append("g")
                             .append("path")
                             .attr("class", "line")
-                            .attr("d", line([{x:0,y:0},{x:60,y:0}]))
-                            .attr("transform", "translate(" + (w - margin.r) + "," + (y(j) + Math.floor((w / yCount) / 2) + yCount + 5) + ")");
+                            .attr("d", line([{x: 0, y: 0}, {x: 60, y: 0}]))
+                            .attr("transform", "translate(" + (w - margin.r) + "," + (y(j) + Math.floor((w / yCount) / 2) + yCount + 1) + ")");
 
                     svg.append("g")
                             .attr("transform", "translate(" + margin.l + "," + (y(j) + margin.t - Math.floor((w / yCount) / 2)) + ")")
