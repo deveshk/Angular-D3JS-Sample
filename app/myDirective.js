@@ -4,7 +4,6 @@ app.directive('mydirective', function () {
         scope: {
             val: "="
         },
-        template: "<div id='d3Chart' class = 'row'></div>",
         link: function (scope, element, attrs) {
 
             scope.$watch('val', function (n, o) {
@@ -12,11 +11,16 @@ app.directive('mydirective', function () {
                 if (!n || typeof (n[0]) === "undefined") {
                     return;
                 }
-                var yCount = n.length;
-                var margin = {t: 20, r: 150, b: 20, l: 70}, width = 1000,
-                        height = 600;
+
+                var margin = {t: 20, r: 150, b: 20, l: 70}, height = 600;
+                var svg = d3.select(element[0]).append("svg")
+                        .style('width', '100%')
+                        .attr('height', height)
+                        .attr("transform", "translate(0," + (margin.t) + ")");
+                var width = parseInt(d3.select("svg").style("width").replace("px",""));
                 var w = width - margin.l - margin.r;
                 var h = height - margin.t - margin.b;
+                var yCount = n.length;
 
 
                 var y = d3.scale.linear().range([h - margin.t - margin.b, 0]);
@@ -50,10 +54,6 @@ app.directive('mydirective', function () {
                         .tickSubdivide(true)
                         .orient("left");
                 y.domain(y_domain);
-                var svg = d3.select("#d3Chart").append("svg")
-                        .attr("width", w)
-                        .attr("height", h)
-                        .attr("transform", "translate(0," + (margin.t) + ")");
 
                 svg.append("g")
                         .attr("class", "x axis")
@@ -144,7 +144,7 @@ app.directive('mydirective', function () {
                         });
 
                 legend.append("rect")
-                        .attr("x", width - 18)
+                        .attr("x", width)
                         .attr("width", 18)
                         .attr("height", 18)
                         .style("fill", function (d) {
@@ -152,10 +152,10 @@ app.directive('mydirective', function () {
                         });
 
                 legend.append("text")
-                        .attr("x", width - 24)
+                        .attr("x", width + 20)
                         .attr("y", 9)
                         .attr("dy", ".35em")
-                        .style("text-anchor", "end")
+                        .style("text-anchor", "start")
                         .text(function (d) {
                             return d.title;
                         });
